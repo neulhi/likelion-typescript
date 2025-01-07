@@ -31,7 +31,7 @@
 
   // 수탉, 소, 양, 돼지는 모두 유사한 속성으로 구성된 인터페이스를 가집니다.
   // 소유한 속성이 유사하므로 각 동물의 타입을 구분할 방법이 필요합니다.
-  // type 리터럴 속성을 추가해 각 동물을 식별할 수 있도록 구성합니다.
+  // kind 리터럴 속성을 추가해 각 동물을 식별할 수 있도록 구성합니다.
 
   function getFarmAnimalSound(animal: FarmAnimal): string {
     switch (animal.kind) {

@@ -6,12 +6,16 @@
 // --------------------------------------------------------------------------
 
 {
-  interface Music {
+	interface RequiredId {
+		id: string;
+	}
+
+  interface Music extends RequiredId {
     title: string;
     artist: string;
   }
 
-  interface Movie {
+  interface Movie extends RequiredId {
     title: string;
     director: string;
     releaseDate: number;

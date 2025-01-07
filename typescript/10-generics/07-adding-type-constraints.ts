@@ -6,7 +6,7 @@
 // --------------------------------------------------------------------------
 
 {
-  function combine<T, U>(o1: T, o2: U): T & U {
+  function combine<T extends object, U extends object>(o1: T, o2: U): T & U {
     return { ...o1, ...o2 };
   }
 
@@ -23,7 +23,7 @@
 
   // 제네릭 타입 T는 length 속성을 포함하는 지 알 수 없으므로 TypeScript가 경고합니다.
   // 제네릭에 타입 제약 조건을 설정해 문제를 해결해봅니다.
-  function getLengthPow<T>(o: T, powNumber: number = 2): number {
+  function getLengthPow<T extends Lengthy>(o: T, powNumber: number = 2): number {
     return o.length ** powNumber;
   }
 

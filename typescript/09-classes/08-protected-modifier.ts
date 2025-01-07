@@ -3,6 +3,7 @@
 // ⭐️ URL : https://bit.ly/3X01Qmo
 // ------------------------------------------------------------------------------
 // - 외부에서는 접근이 불가능하지만, 서브 클래스에서는 접근 가능하도록 접근 제어를 설정할 수 있습니다.
+// - 함수형 프로그래밍(FP), 객체 지향 프로그래밍(OOP)
 // ------------------------------------------------------------------------------
 
 // AdvancedPlayer 클래스에서 Player 클래스의 _score 프로퍼티에 접근할 수 있도록 조정합니다.
@@ -10,6 +11,7 @@
 {
   type FullName = { role: string; nickname: string } | string;
 
+	// super class
   class Player {
     private _score: number;
 
@@ -56,7 +58,8 @@
     }
   }
 
-  class AdvancedPlayer extends Player {
+	// sub class
+	class AdvancedPlayer extends Player {
     public hasSuperPower: boolean = true;
 
     fullScoreUp() {

@@ -18,7 +18,7 @@
     direction: 'Vertial';
   }
 
-  interface SpecialMouse {
+  interface SpecialMouse extends Mouse, VerticalTypeMouse {
     releaseDate: number;
   }
 

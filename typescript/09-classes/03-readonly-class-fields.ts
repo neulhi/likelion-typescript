@@ -9,8 +9,8 @@
 
 {
   class Player {
-    nickname: string;
-    role: string;
+    readonly nickname: string;
+    readonly role: string;
     score: number = 0;
 
     constructor(nickname: string, role: string) {

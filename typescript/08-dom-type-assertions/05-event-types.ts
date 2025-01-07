@@ -10,18 +10,18 @@
 
 {
   const body = document.querySelector('body')!;
-  const input = body.querySelector('input')!;
+  const input = body.querySelector('input');
 
-  const handleClickBody = (e) => {
+  const handleClickBody = (e: MouseEvent) => {
     console.log(e.target);
   };
 
   body.addEventListener('click', handleClickBody);
 
-  const handleInput = (e) => {
-    let value = e.target.value;
+  const handleInput = (e: Event) => {
+    let value = (e.target as HTMLInputElement).value;
     console.log(value);
   };
 
-  input.addEventListener('input', handleInput);
+  input?.addEventListener('input', handleInput);
 }

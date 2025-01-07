@@ -12,7 +12,7 @@
   class Player {
     public readonly nickname: string;
     public readonly role: string;
-    public score: number = 0;
+    private score: number = 0;
 
     constructor(nickname: string, role: string) {
       this.nickname = nickname;
@@ -20,7 +20,7 @@
       this.boostScoreUp();
     }
 
-    public boostScoreUp(): void {
+    private boostScoreUp(): void {
       this.score += 100;
     }
 

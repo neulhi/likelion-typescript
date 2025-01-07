@@ -2,10 +2,10 @@
 /* Node.js JavaScript 실행 환경(Runtime Environment)                            */
 /* -------------------------------------------------------------------------- */
 
-// CommonJS 진영 모듈 호출 방식
+// CommonJS 진영 모듈 호출 방식 (default)
 // const http = require('node:http')
 
-// ESM 표준 모듈 호출 방식
+// ESM 표준 모듈 호출 방식 (package.json -> type: 'module' / .mjs)
 import http from 'node:http';
 
 // http://localhost:4000
