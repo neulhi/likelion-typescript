@@ -13,6 +13,6 @@
   const numbers = [-2, 13, 9];
   const colors = ['제네릭', '함수', '클래스'];
 
-  numbers.push('100');
-  colors.splice(1, 1, 100);
+  numbers.push(+'100');
+  colors.splice(1, 1, 100 + '');
 }

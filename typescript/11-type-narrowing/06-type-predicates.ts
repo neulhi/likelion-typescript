@@ -28,7 +28,7 @@
   // 참고)
   // 5.5.4 버전 이후부터는 타입 프리디케이트를 사용하지 않아도
   // TypeScript에서 타입을 잘 추론하여 오류를 발생시키지 않습니다.
-  function isDog(animal: Cat | Dog) {
+  function isDog(animal: Cat | Dog): animal is Dog {
     return 'breed' in animal;
   }
 
