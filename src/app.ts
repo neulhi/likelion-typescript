@@ -13,6 +13,8 @@
 import 'dotenv/config';
 import express from 'express';
 import type { Response, Express, Request, NextFunction } from 'express';
+import { readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
 
 const app: Express = express();
 
@@ -24,22 +26,21 @@ const MESSAGE = `웹 서버 구동 : http://${HOSTNAME}:${PORT}`;
 
 /* Routing ------------------------------------------------------------------ */
 
-app.get('/', (request: Request, response: Response, nextFunction: NextFunction) => {
-  // 서버 -> 클라이언트 응답(response)
-  response.send(/* html */ `
-		<!doctype html>
-		<html lang="ko-KR">
-			<head>
-				<meta charset="UTF-8" />
-				<title>간단한 API 서버 구동 (with TypeScript & Express.js)</title>
-				<meta name="description" content="TypeScript를 활용해 Express 앱을 구동시킵니다." />
-				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-			</head>
-			<body>
-				<h1>웰컴 <abbr title="Application Programming Interface">API</abbr> 서버</h1>
-			</body>
-		</html>
-		`);
+app.get('/', async (request: Request, response: Response, nextFunction: NextFunction) => {
+  // 서버 애플리케이션이 로컬 저장소 위치의 파일 비동기 방식으로 읽기
+  // fsPromises.readFile()(path: string, options?)
+  // __dirname === new URL('./', import.meta.url)
+  try {
+    const entryFilePath = resolve(__dirname, './index.html');
+    const entryFileCode = await readFile(entryFilePath, { encoding: 'utf-8' });
+
+    // 서버 -> 클라이언트 응답(response)
+    response.status(200 /* OK */).send(entryFileCode);
+  } catch (error: unknown) {
+    response.status(500 /* Internal Server Error */).send({
+      message: (error as Error).message,
+    });
+  }
 });
 
 app.listen(PORT, HOSTNAME, () => {
