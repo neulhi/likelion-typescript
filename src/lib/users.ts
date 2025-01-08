@@ -1,6 +1,6 @@
 import { resolve } from 'node:path';
 import { readFile, writeFile } from 'node:fs/promises';
-import type User from '../types/user';
+import type { User } from '../types/user';
 
 const filePath = resolve(__dirname, '../data/users.json');
 
@@ -10,11 +10,10 @@ export async function readUsers(): Promise<User[]> {
   return await JSON.parse(usersString);
 }
 
-// data/users.json 파일에 쓰기 함수
-export async function writeUsers(newUser: User) {
-  const users = await readUsers();
-  users.push(newUser);
-  await writeFile(filePath, JSON.stringify(users, null, 2), {
+// data/users.json 파일 쓰기 함수
+export async function writeUsers(updatedUsers: User[]) {
+  const filePath = resolve(__dirname, '../data/users.json');
+  await writeFile(filePath, JSON.stringify(updatedUsers, null, 2), {
     encoding: 'utf-8',
   });
 }

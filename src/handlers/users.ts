@@ -2,7 +2,10 @@ import type { Request, Response } from 'express';
 import type { User, RequestUser } from '../types/user';
 import { readUsers, writeUsers } from '../lib/users';
 
-export const createUserHandler = async (
+// CREATE ----------------------------------------------------------------------
+
+// `POST /api/users`
+export const createUserHander = async (
   request: Request<{}, {}, RequestUser>,
   response: Response
 ) => {
@@ -26,7 +29,8 @@ export const createUserHandler = async (
   try {
     // 클라이언트에 응답
     // 성공한 경우
-    await writeUsers(newUser);
+    users.push(newUser);
+    await writeUsers(users);
     response.status(201).json(newUser);
   } catch (error: unknown) {
     // 실패한 경우
@@ -36,6 +40,9 @@ export const createUserHandler = async (
   }
 };
 
+// READ ------------------------------------------------------------------------
+
+// `GET /api/users`
 export const readAllUsersHandler = async (
   request: Request,
   response: Response<User[] | { message: string } | void>
@@ -50,6 +57,7 @@ export const readAllUsersHandler = async (
   }
 };
 
+// `GET /api/users/:id`
 export const readUserByIdHandler = async (
   request: Request,
   response: Response
@@ -74,6 +82,91 @@ export const readUserByIdHandler = async (
   } catch (error: unknown) {
     response.status(500).json({
       message: '알 수 없는 오류가 발생했습니다! 😥',
+    });
+  }
+};
+
+// UPDATE ---------------------------------------------------------------------
+
+// `PUT /api/users/:id`
+export const putUserHandler = async (
+  request: Request,
+  response: Response
+) => {};
+
+// `PATCH /api/users/:id`
+export const patchUserHandler = async (
+  request: Request<{ id: string }, {}, RequestUser>,
+  response: Response
+) => {
+  const id = Number(request.params.id);
+  const requrestBody = request.body;
+
+  try {
+    const users = await readUsers();
+    const user = users.find((user) => user.id === Number(id));
+
+    if (user) {
+      const updatedUser = {
+        ...user,
+        ...requrestBody,
+      };
+
+      const willUpdateUsers = users.map((user) => {
+        if (user.id === id) {
+          return updatedUser;
+        } else {
+          return user;
+        }
+      });
+
+      await writeUsers(willUpdateUsers);
+      response.status(200).json(updatedUser);
+    } else {
+      response.status(404).json({
+        message: `요청한 ID ${id} 사용자 정보를 찾을 수 없습니다.`,
+      });
+    }
+  } catch (error: unknown) {
+    response.status(500).json({
+      message: '알 수 없는 오류가 발생했습니다.',
+    });
+  }
+};
+
+// DELETE ---------------------------------------------------------------------
+
+// `DELETE /api/users/:id
+export const deleteUserHandler = async (
+  request: Request,
+  response: Response
+) => {
+  // REQUEST
+  const { id } = request.params;
+
+  try {
+    // READ
+    const users = await readUsers();
+
+    // find user
+    const user = users.find((user) => user.id === Number(id));
+
+    if (user) {
+      // WRITE
+      const willUpdateUsers = users.filter((user) => user.id !== Number(id));
+      await writeUsers(willUpdateUsers);
+      // RESPONSE
+      response.status(200).json({});
+    } else {
+      // RESPONSE
+      response.status(404).json({
+        message: `요청한 ID ${id} 사용자 정보를 찾을 수 없습니다.`,
+      });
+    }
+  } catch (error: unknown) {
+    // RESPONSE
+    response.status(500).json({
+      message: '알 수 없는 오류가 발생했습니다.',
     });
   }
 };
