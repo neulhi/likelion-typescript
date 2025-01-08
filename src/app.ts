@@ -13,10 +13,10 @@
 import 'dotenv/config';
 import express from 'express';
 import type { Express, Request } from 'express';
-import { RequestUser, User } from './types/user';
+import type { RequestUser, User } from './types/user';
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-
+import { readUsers, writeUsers } from './lib/users';
 
 /* CONFIG. ------------------------------------------------------------------ */
 
@@ -61,28 +61,35 @@ app.use(express.json());
 // CREATE (POST) ---------------------------------------------------------------- */
 // 'POST /api/users'
 app.post('/api/users', async (request: Request<{}, {}, RequestUser>, response) => {
-  // 클라이언트 요청(JSON)
-  console.log(request.body);
-	
-	// 서버에서 프로그래밍
-	// data/users.json 파일 읽기
-	// fsPromises.readFile() 
-	const usersString = await readFile(resolve(__dirname, './data/users.json'), { encoding: 'utf-8' });
+  // 클라이언트 요청 정보(JSON)
+  // console.log(request.body);
 
-	// JSON format string - [JSON.parse(jsonString)] -> JavaScript Object
-	const usersJSON: User[] = JSON.parse(usersString);
+  // 서버에서 프로그래밍
+  // 1. 데이터 파일 읽기
+  const users = await readUsers();
 
-	console.log(usersJSON); 
+  // 새롭게 생설될 사용자(User) 객체
+  const newId = users.length + 1;
+  // const newId = crypto.randomUUID();
+  const newUser: User = {
+    id: newId,
+    ...request.body,
+  };
 
-	// data/users.json 파일에 쓰기
-	// fsPromises.writeFile()
+  // console.log({ newUser });
 
-  // 클라이언트에 응답
-
-	// 성공한 경우
-  response.status(201).json({});
-
-	// 실패한 경우
+  // 2. 데이터 파일 쓰기
+  try {
+		await writeUsers(newUser);
+    // 클라이언트에 응답
+    // 성공한 경우
+    response.status(201).json(newUser);
+  } catch (error: unknown) {
+    // 실패한 경우
+		response.status(401).json({
+			message: '이런... 사용자 정보 생성에 실패했습니다.. 😭',
+		})
+  }
 });
 
 // READ (GET) ---------------------------------------------------------------- */
