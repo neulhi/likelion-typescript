@@ -9,6 +9,7 @@ node_modules
 .vscode/*
 !.vscode/extensions.json
 
+server
 dist
 .env
 .env.local
