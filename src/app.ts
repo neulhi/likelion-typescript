@@ -10,7 +10,7 @@
 // 여러 정적 에셋 디렉토리를 사용하려면 express.static 미들웨어 함수를 여러 번 호출합니다.
 //
 // --------------------------------------------------------------------------
-import 'dotenv/config'
+import 'dotenv/config';
 import express from 'express';
 import type { Response, Express, Request, NextFunction } from 'express';
 
@@ -26,7 +26,20 @@ const MESSAGE = `웹 서버 구동 : http://${HOSTNAME}:${PORT}`;
 
 app.get('/', (request: Request, response: Response, nextFunction: NextFunction) => {
   // 서버 -> 클라이언트 응답(response)
-  response.send('<h1>Hello Express.js & TypeScript</h1>');
+  response.send(/* html */ `
+		<!doctype html>
+		<html lang="ko-KR">
+			<head>
+				<meta charset="UTF-8" />
+				<title>간단한 API 서버 구동 (with TypeScript & Express.js)</title>
+				<meta name="description" content="TypeScript를 활용해 Express 앱을 구동시킵니다." />
+				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+			</head>
+			<body>
+				<h1>웰컴 <abbr title="Application Programming Interface">API</abbr> 서버</h1>
+			</body>
+		</html>
+		`);
 });
 
 app.listen(PORT, HOSTNAME, () => {
