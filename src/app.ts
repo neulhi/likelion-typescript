@@ -12,11 +12,10 @@
 // --------------------------------------------------------------------------
 import 'dotenv/config';
 import express from 'express';
-import type { Express } from 'express';
-import entryHandler from './handlers/entry';
-import greetingMessage from './middlewares/greetingMessage';
+import type { Express, Request } from 'express';
 import { resolve } from 'node:path';
-import User from './types/user';
+import type User from './types/user';
+
 
 /* CONFIG. ------------------------------------------------------------------ */
 
@@ -30,8 +29,9 @@ const MESSAGE = `웹 서버 구동 : http://${HOSTNAME}:${PORT}`;
 
 /* Middleware ------------------------------------------------------------------ */
 
-app.use(greetingMessage);
+// app.use(greetingMessage);
 app.use(express.static(resolve(__dirname, '../public')));
+app.use(express.json());
 
 /* Routing ------------------------------------------------------------------ */
 //
@@ -57,23 +57,21 @@ app.use(express.static(resolve(__dirname, '../public')));
 
 /* Users API ---------------------------------------------------------------- */
 
-const dummyUser: User = {
-  id: 1,
-  name: '박하신',
-  gender: '여성',
-  age: 25,
-};
-
-const dummyUserList: User[] = [dummyUser];
-
 // CREATE (POST) ---------------------------------------------------------------- */
 // 'POST /api/users'
+app.post('/api/users', (request: Request<{}, {}, User>, response) => {
+  // 클라이언트 요청(JSON)
+  console.log(request.body);
+
+  // 클라이언트에 응답
+  response.status(201).json({});
+});
 
 // READ (GET) ---------------------------------------------------------------- */
 // 'GET /api/users'
 app.get('/api/users', (request, response) => {
   // Response (to Client)
-  response.status(200).json(dummyUserList);
+  // response.status(200).json(dummyUserList);
 });
 
 // 'GET /api/users/:id'
